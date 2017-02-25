@@ -25,3 +25,6 @@ before_install:
 
   # Android SDK Build-tools
   - echo yes | android update sdk --all --filter build-tools-19.0.3 --no-ui --force > /dev/null
+
+script:
+  - ./gradlew build
