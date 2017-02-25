@@ -13,6 +13,23 @@ import android.util.Log;
  * @since 17. 2. 25
  */
 
+/**
+ * 'Prefer' is an advanced android sharedpreference library.
+ *
+ * Example
+ *
+ * Prefer.set("user_int_state", 1);
+ * int userState = Prefer.get("user_int_state", 0);
+ *
+ * Prefer.set("user_name", "john smith");
+ * String userName = Prefer.get("user_name", "none");
+ *
+ * Prefer.set("enable_push_noti", true);
+ * Boolean pushEnable = Prefer.get("enable_push_noti", false);
+ *
+ * It support String, Integer, Float, Boolean, Long, Structure(soon....)
+ */
+
 public class Prefer {
 
     // logging tag
@@ -23,6 +40,23 @@ public class Prefer {
 
     private static Context context;
 
+    /*
+    *   Basic Constructor
+    *
+    *   set default context and sharedpreferece file name.
+    *   
+    * */
+
+    public static void init(@NonNull Context context){
+        Prefer.context = context;
+        Prefer.fileName = context.getPackageName();
+    }
+
+    public static void init(@NonNull Context context, @NonNull String fileName){
+        Prefer.context = context;
+        Prefer.fileName = fileName;
+    }
+
     public static synchronized SharedPreferences getSharedPreferences(){
         if(context == null){
             throw new NullPointerException();
@@ -32,11 +66,6 @@ public class Prefer {
             preferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
         }
         return preferences;
-    }
-
-    public static void init(@NonNull Context context, String fileName){
-        Prefer.context = context;
-        Prefer.fileName = fileName;
     }
 
     public static void set(@NonNull String key, @NonNull Object value){
@@ -74,7 +103,7 @@ public class Prefer {
         editor.commit();
     }
 
-    public static <T> T get(String key, T defaultValue){
+    public static <T> T get(@NonNull String key, @NonNull T defaultValue){
         if (key == null){
             throw new NullPointerException();
         }
