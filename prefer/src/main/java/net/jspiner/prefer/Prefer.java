@@ -11,9 +11,7 @@ import android.util.Log;
  * @author jspiner (jspiner@naver.com)
  * @project PreferLib
  * @since 17. 2. 25
- */
-
-/**
+ *
  * 'Prefer' is an advanced android sharedpreference library.
  *
  * Example
@@ -40,23 +38,40 @@ public class Prefer {
 
     private static Context context;
 
-    /*
-    *   Basic Constructor
-    *
-    *   set default context and sharedpreferece file name.
-    *   
-    * */
-
+    /**
+     * Basic Initializer
+     *
+     * set default context and sharedpreferece file name.
+     *
+     * @param context(NonNull)  : application context or activity context
+     *
+     * The file name is created with the default application package name.
+     */
     public static void init(@NonNull Context context){
         Prefer.context = context;
         Prefer.fileName = context.getPackageName();
     }
 
+    /**
+     * Initializer with filename
+     *
+     * set default context and sharedpreferece file name.
+     *
+     * @param context(NonNull)  : application context or activity context
+     * @param fileName(NonNull)  : sharedpreferece file name
+     */
     public static void init(@NonNull Context context, @NonNull String fileName){
         Prefer.context = context;
         Prefer.fileName = fileName;
     }
 
+    /**
+     * Function that get sharedpreference instance as singleton
+     *
+     * @return SharedPreference : instance of SharedPreference
+     *
+     * @throws NullPointerException : When Prerer.init() is not called with context
+     */
     public static synchronized SharedPreferences getSharedPreferences(){
         if(context == null){
             throw new NullPointerException();
@@ -68,6 +83,17 @@ public class Prefer {
         return preferences;
     }
 
+    /**
+     * Function that set data as key-value pair.
+     *
+     * support below value type
+     * Integer/String/Boolean/Float/Double/Long
+     *
+     * @param key(NonNull) : string key
+     * @param value(NonNull) : value to save
+     *
+     * @throws NullPointerException : When key or value is null
+     */
     public static void set(@NonNull String key, @NonNull Object value){
         if(key==null || value==null){
             throw new NullPointerException();
@@ -103,6 +129,19 @@ public class Prefer {
         editor.commit();
     }
 
+    /**
+     * Function that get data using key and defaultValue's type
+     *
+     * auto cast return type using defaultValue's type
+     *
+     * @param key(NonNull) : string key
+     * @param defaultValue(NonNull) : default value to return
+     *                              when there is no matching value for the key
+     * @param <T> : type of defaultValue
+     *
+     *
+     * @return <T> : casted saved value
+     */
     public static <T> T get(@NonNull String key, @NonNull T defaultValue){
         if (key == null){
             throw new NullPointerException();
